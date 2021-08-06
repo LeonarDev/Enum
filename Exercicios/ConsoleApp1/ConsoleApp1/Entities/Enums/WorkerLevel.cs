@@ -3,7 +3,7 @@
     enum WorkerLevel : int
     {
         Junior = 0,
-        Pleno = 1,
+        MidLevel = 1,
         Senior = 2
     }
 }

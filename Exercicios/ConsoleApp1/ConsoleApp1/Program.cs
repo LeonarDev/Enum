@@ -1,6 +1,7 @@
-﻿using ConsoleApp1.Entities;
+﻿using System;
+using System.Globalization;
+using ConsoleApp1.Entities;
 using ConsoleApp1.Entities.Enums;
-using System;
 
 namespace ConsoleApp1
 {
@@ -21,12 +22,12 @@ namespace ConsoleApp1
             string nameInput = Console.ReadLine();
 
             Console.Write("Level (Junior/MidLevel/Senior): ");
-            string levelInput = Console.ReadLine();
-            WorkerLevel level = new WorkerLevel
+            WorkerLevel level = Enum.Parse<WorkerLevel>(Console.ReadLine());
 
             Console.Write("Base salary: ");
-            double baseSalary = double.Parse(Console.ReadLine());
+            double baseSalary = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
 
+            Worker worker = new Worker(nameInput, level, baseSalary, department);
 
             Console.Write("How many contracts to this worker? ");
             int contracts = int.Parse(Console.ReadLine());
@@ -47,27 +48,21 @@ namespace ConsoleApp1
                     int hours = int.Parse(Console.ReadLine());
 
                     HourContract contract = new HourContract(date, valuePerHour, hours);
+
+                    worker.AddContract(contract);
                 }
             }
 
-            // VINCULAR AS VARIAVEIS DESTE ESCOPO COM AS VARIAVES DAS CLASSES:
+            Console.WriteLine();
 
             Console.Write("Enter month and year to calculate income (MM/YYYY): ");
-            DateTime income = DateTime.Parse(Console.ReadLine());
+            string monthAndYear = Console.ReadLine();
+            int month = int.Parse(monthAndYear.Substring(0, 2));
+            int year = int.Parse(monthAndYear.Substring(3));
 
-            Console.WriteLine($"Name: {nameInput}");
-            Console.WriteLine($"Department: {department}");
-            Console.WriteLine($"Income for {income}: {HourContract.TotalValue()}");
-
-            Console.Write("");
-
-            Console.Write("");
-
-            Console.Write("");
-
-            Console.Write("");
-
-            Console.Write("");
+            Console.WriteLine($"Name: {worker.Name}");
+            Console.WriteLine($"Department: {worker.Department.Name}");
+            Console.WriteLine($"Income for {monthAndYear}: {worker.Income(year, month).ToString("F2", CultureInfo.InvariantCulture)}");
         }
     }
 }
